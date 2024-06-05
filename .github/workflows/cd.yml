@@ -79,7 +79,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { owner, repo } = context.repo
-            const tagName = ${{ github.ref }}
+            const tagName = 'v1.0.0'
             let releaseId
             try {
               const getReleaseResponse = await github.repos.getReleaseByTag({

@@ -3,7 +3,7 @@ name: Build SiYuan Kernel
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build:

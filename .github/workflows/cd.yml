@@ -2,8 +2,8 @@ name: CD For SiYuan
 
 on:
   push:
-     branches:
-      - master
+     tags:
+        - '*'
       
   workflow_dispatch:
 

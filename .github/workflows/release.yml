@@ -52,7 +52,7 @@ jobs:
       run: |
         New-Item -ItemType Directory -Force -Path app/dist/win-unpacked/resources/kernel
         ls
-        mv app/kernel/SiYuan-Kernel.exe app/dist/win-unpacked/resources/kernel
+        Move-Item -Force app/kernel/SiYuan-Kernel.exe app/dist/win-unpacked/resources/kernel
 
     - name: Create Release
       id: create_release

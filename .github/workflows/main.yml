@@ -3,7 +3,7 @@ name: Build SiYuan Kernel
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   build:
@@ -21,12 +21,13 @@ jobs:
     - name: Install dependencies
       run: |
         echo "CGO_ENABLED=1" >> $GITHUB_ENV
-        cd kernel
+        cd siyuan_paid/kernel
         go get -v -t -d ./...
 
     - name: Build SiYuan Kernel
       run: |
-        go build --tags "fts5" -o "../app/kernel/SiYuan-Kernel.exe"
+        cd siyuan_paid/kernel
+        go build --tags "fts5" -o "../../app/kernel/SiYuan-Kernel.exe"
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2

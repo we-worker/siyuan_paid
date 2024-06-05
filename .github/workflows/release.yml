@@ -65,12 +65,16 @@ jobs:
         draft: false
         prerelease: false
 
+    - name: Archive production artifacts
+      run: |
+        Compress-Archive -Path ./app/dist/win-unpacked/* -DestinationPath ./app/dist/win-unpacked.zip
+    
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app/dist/win-unpacked/
+        asset_path: ./app/dist/win-unpacked.zip
         asset_name: SiYuan-win-unpacked.zip
         asset_content_type: application/zip

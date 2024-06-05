@@ -50,7 +50,8 @@ jobs:
 
     - name: Move Kernel to Frontend
       run: |
-        mkdir -p app/dist/win-unpacked/resources/kernel
+        New-Item -ItemType Directory -Force -Path app/dist/win-unpacked/resources/kernel
+        ls
         mv app/kernel/SiYuan-Kernel.exe app/dist/win-unpacked/resources/kernel
 
     - name: Create Release

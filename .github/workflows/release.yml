@@ -1,0 +1,75 @@
+name: Build and Release SiYuan
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.22
+
+    - name: Install dependencies
+      run: |
+        echo "CGO_ENABLED=1" >> $GITHUB_ENV
+        cd kernel
+        go get -v -t -d ./...
+
+    - name: Build SiYuan Kernel windows
+      run: |
+        cd kernel
+        go build --tags "fts5" -o "../app/kernel/SiYuan-Kernel.exe"
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20.13'
+
+    - name: Install frontend dependencies and build
+      run: |
+        npm install -g pnpm@9.1.1
+        cd app
+        pnpm install
+        pnpm install electron@28.3.1 -D
+        pnpm run build
+
+    - name: Package application
+      run: |
+        cd app
+        npx electron-builder build --windows
+        ls dist
+
+    - name: Move Kernel to Frontend
+      run: |
+        mkdir -p app/dist/win-unpacked/resources/kernel
+        mv app/kernel/SiYuan-Kernel.exe app/dist/win-unpacked/resources/kernel
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./app/dist/win-unpacked/
+        asset_name: SiYuan-win-unpacked.zip
+        asset_content_type: application/zip

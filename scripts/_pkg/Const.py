@@ -8,12 +8,12 @@ docmap_siyuan = {
     "Development": "Development",
 }
 
-repo_siyuan = "siyuan-note/siyuan"
+repo_siyuan = "we-worker/Mysiyuan"
 hostname = "api.github.com"
 
 HEADER_siyuan = '''
 '''
 
 HEADER = {
-  "siyuan-note/siyuan": HEADER_siyuan,
+  "we-worker/Mysiyuan": HEADER_siyuan,
 }

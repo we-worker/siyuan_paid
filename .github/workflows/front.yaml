@@ -35,4 +35,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: SiYuan-Frontend
-        path: dist/*.exe
+        path: dist/*

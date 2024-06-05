@@ -1,0 +1,38 @@
+name: Build SiYuan Frontend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install frontend dependencies and build
+      run: |
+        npm install -g pnpm@9.1.1
+        cd app
+        pnpm install
+        pnpm install electron@28.3.1 -D
+        pnpm run build
+
+    - name: Package application
+      run: |
+        cd app
+        npx electron-builder build --windows
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: SiYuan-Frontend
+        path: dist/*.exe

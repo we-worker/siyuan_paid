@@ -7,7 +7,7 @@ artifactName: "siyuan-${version}-${os}.${ext}"
 extraMetadata:
   main: "electron/main.js"
 directories:
-  output: "build"
+  output: "dist"
 files:
   - "electron"
 extraFiles:

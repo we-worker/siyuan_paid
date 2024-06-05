@@ -851,7 +851,6 @@ func InitBoxes() {
 }
 
 func IsSubscriber() bool {
-	u := Conf.GetUser()
 	return true
 }
 

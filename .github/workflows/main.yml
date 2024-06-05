@@ -1,0 +1,35 @@
+name: Build SiYuan Kernel
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Install dependencies
+      run: |
+        echo "CGO_ENABLED=1" >> $GITHUB_ENV
+        cd kernel
+        go get -v -t -d ./...
+
+    - name: Build SiYuan Kernel
+      run: |
+        go build --tags "fts5" -o "../app/kernel/SiYuan-Kernel.exe"
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: SiYuan-Kernel
+        path: app/kernel/SiYuan-Kernel.exe
